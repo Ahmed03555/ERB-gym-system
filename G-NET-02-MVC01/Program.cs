@@ -1,3 +1,7 @@
+using G_NET_02_MVC01.DAL.Context;
+using G_NET_02_MVC01.DAL.Repositories.Classes;
+using G_NET_02_MVC01.DAL.Repositories.Interface;
+
 namespace G_NET_02_MVC01
 {
     public class Program
@@ -8,7 +12,9 @@ namespace G_NET_02_MVC01
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddDbContext<GymContext>();
+            builder.Services.AddScoped<IPlanRepositorie,PlanRepositorie>();
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

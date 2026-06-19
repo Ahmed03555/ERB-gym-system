@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="G-NET-02-MVC01.BLL/G-NET-02-MVC01.BLL.csproj" Id="dd49a7d3-bfba-4c87-9244-a50839faaead" />
+  <Project Path="G-NET-02-MVC01.DAL/G-NET-02-MVC01.DAL.csproj" Id="74e10a98-6bbc-45f1-ad51-bf96b2bd106d" />
   <Project Path="G-NET-02-MVC01/G-NET-02-MVC01.csproj" />
 </Solution>
