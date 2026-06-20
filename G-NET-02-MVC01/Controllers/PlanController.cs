@@ -4,14 +4,15 @@ using G_NET_02_MVC01.Models;
 using Microsoft.AspNetCore.Mvc;
 using G_NET_02_MVC01.DAL.Context;
 using G_NET_02_MVC01.DAL.Repositories.Interface;
+using G_NET_02_MVC01.DAL.Entities;
 using G_NET_02_MVC01.DAL.Repositories.Classes;
 
 namespace G_NET_02_MVC01.Controllers
 {
     public class PlanController : Controller
     {
-        private readonly IPlanRepositorie planRepositorie;
-        public PlanController(IPlanRepositorie _planRepositorie)
+        private readonly IGenericRepositorie<Plans> planRepositorie;
+        public PlanController(IGenericRepositorie<Plans> _planRepositorie)
         {
             planRepositorie = _planRepositorie;
         }

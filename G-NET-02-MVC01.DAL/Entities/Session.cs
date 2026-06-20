@@ -13,7 +13,7 @@ namespace G_NET_02_MVC01.DAL.Entities
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        // FKs + navigations
+        
         public int TrainerId { get; set; }
         public Trainer Trainer { get; set; } = null!;
         public Category Category { get; set; } = null!;

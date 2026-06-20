@@ -37,5 +37,7 @@ namespace G_NET_02_MVC01.DAL.Entities
         public string State { get; set; } = null!;
         [Required, MaxLength(10)]
         public string ZipCode { get; set; } = null!;
+
+        public int BuildingNumber { get; set; }
     }
 }

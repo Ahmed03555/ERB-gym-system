@@ -1,6 +1,7 @@
 using G_NET_02_MVC01.DAL.Context;
 using G_NET_02_MVC01.DAL.Repositories.Classes;
 using G_NET_02_MVC01.DAL.Repositories.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace G_NET_02_MVC01
 {
@@ -12,9 +13,12 @@ namespace G_NET_02_MVC01
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<GymContext>();
-            builder.Services.AddScoped<IPlanRepositorie,PlanRepositorie>();
-            
+            builder.Services.AddDbContext<GymContext>(options => {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                });
+            //builder.Services.AddScoped<IPlanRepositorie,PlanRepositorie>();
+            builder.Services.AddScoped(typeof(IGenericRepositorie<>), typeof(GenericRepositorie<>));
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
