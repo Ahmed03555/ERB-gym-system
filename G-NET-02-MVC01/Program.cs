@@ -1,6 +1,9 @@
+using G_NET_02_MVC01.BLL.Services.Interface;
 using G_NET_02_MVC01.DAL.Context;
+using G_NET_02_MVC01.DAL.Entities;
 using G_NET_02_MVC01.DAL.Repositories.Classes;
 using G_NET_02_MVC01.DAL.Repositories.Interface;
+using G_NET_02_MVC01.BLL.Services.Class;
 using Microsoft.EntityFrameworkCore;
 
 namespace G_NET_02_MVC01
@@ -17,7 +20,9 @@ namespace G_NET_02_MVC01
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
                 });
             //builder.Services.AddScoped<IPlanRepositorie,PlanRepositorie>();
-            builder.Services.AddScoped(typeof(IGenericRepositorie<>), typeof(GenericRepositorie<>));
+            //builder.Services.AddScoped(typeof(IGenericRepositorie<>), typeof(GenericRepositorie<>));
+            builder.Services.AddScoped<IMemberServices, MemberServices>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();  
 
             var app = builder.Build();
 

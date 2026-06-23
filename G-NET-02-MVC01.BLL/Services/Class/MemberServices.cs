@@ -9,22 +9,15 @@ namespace G_NET_02_MVC01.BLL.Services.Class
 {
     public class MemberServices : IMemberServices
     {
-        private readonly IGenericRepositorie<Member> _memberRepositorie;
-        private readonly IGenericRepositorie<Membership> _membershipRepositorie;
-        private readonly IGenericRepositorie<Plans> _planRepositorie;
-        private readonly IGenericRepositorie<HealthRecord> _healthRecordRepositorie;
-        private readonly IGenericRepositorie<Booking> _bookingRepositorie;
-        public MemberServices(IGenericRepositorie<Member> _memberRepositorie, IGenericRepositorie<Membership> _membershipRepositorie, IGenericRepositorie<Plans> _planRepositorie, IGenericRepositorie<HealthRecord> _healthRecordRepositorie, IGenericRepositorie<Booking> _bookingRepositorie) {
-            this._memberRepositorie = _memberRepositorie;
-            this._membershipRepositorie = _membershipRepositorie;
-            this._planRepositorie = _planRepositorie;
-            this._healthRecordRepositorie = _healthRecordRepositorie;
-            this._bookingRepositorie = _bookingRepositorie;
+        private readonly IUnitOfWork unitOfWork;
+
+        public MemberServices(IUnitOfWork unitOfWork) {
+            this.unitOfWork=unitOfWork;
         }
         public async Task<bool> CreateMemberAsync(CreateMemberViewModel createMemberViewModel, CancellationToken ct = default)
         {
-            var mailExist = await _memberRepositorie.AnyAsync(m => m.Email == createMemberViewModel.Email, ct);
-            var phoneExist = await _memberRepositorie.AnyAsync(m => m.Phone == createMemberViewModel.Phone, ct);
+            var mailExist = await unitOfWork.GetRepository<Member>().AnyAsync(m => m.Email == createMemberViewModel.Email, ct);
+            var phoneExist = await unitOfWork.GetRepository<Member>().AnyAsync(m => m.Phone == createMemberViewModel.Phone, ct);
             
             if(mailExist || phoneExist)
             {
@@ -52,26 +45,26 @@ namespace G_NET_02_MVC01.BLL.Services.Class
                 }
 
             };
-             _memberRepositorie.Add(member);
-            var result = await _memberRepositorie.CompleteAsync();
+             unitOfWork.GetRepository<Member>().Add(member);
+            var result = await unitOfWork.CompleteAsync();
             return result > 0;
         }
 
         public async Task<bool> DeleteMemberAsync(int memberId, CancellationToken ct = default)
         {
-            var memberFuture =await _bookingRepositorie.AnyAsync(b => b.MemberId == memberId && b.Session.EndDate > DateTime.Now, ct);
+            var memberFuture =await unitOfWork.GetRepository<Booking>().AnyAsync(b => b.MemberId == memberId && b.Session.EndDate > DateTime.Now, ct);
             if (memberFuture)
             {
                 return false;
             }
-            _memberRepositorie.Delete(memberId);
-            var result = await _memberRepositorie.CompleteAsync();
+            unitOfWork.GetRepository<Member>().Delete(memberId);
+            var result = await unitOfWork.CompleteAsync();
             return result > 0;
         }
 
         public async Task<IEnumerable<MemberViewModel>> GetAllMembersAsync(CancellationToken ct = default)
         {
-            var members = await _memberRepositorie.GetAll(false, ct);
+            var members = await unitOfWork.GetRepository<Member>().GetAll(false, ct);
             if (!members.Any()) return [];
             var membersViewModel = members.Select(m => new MemberViewModel
             {
@@ -89,7 +82,7 @@ namespace G_NET_02_MVC01.BLL.Services.Class
 
         public async Task<HealthRecordViewModel> GetHealthRecordAsync(int memberId, CancellationToken ct = default)
         {
-           var healthRecord = await _healthRecordRepositorie.FirstOrDefaultAsync(hr => hr.MemberId == memberId, false, ct);
+           var healthRecord = await unitOfWork.GetRepository<HealthRecord>().FirstOrDefaultAsync(hr => hr.MemberId == memberId, false, ct);
             if (healthRecord == null) return null;
             return new HealthRecordViewModel()
             {
@@ -104,7 +97,7 @@ namespace G_NET_02_MVC01.BLL.Services.Class
 
         public async Task<MemberViewModel> GetMemberDetailsAsync(int memberId, CancellationToken ct = default)
         {
-           var member = await _memberRepositorie.GetById(memberId, ct);
+           var member = await unitOfWork.GetRepository<Member>().GetById(memberId, ct);
             if (member == null) return null;
             var MemberShipVm=  new MemberViewModel()
            {
@@ -116,10 +109,10 @@ namespace G_NET_02_MVC01.BLL.Services.Class
                Gender = member.Gender.ToString(),
                Address=$"{member.Address.BuildingNumber},{member.Address.State}, {member.Address.ZipCode}",
            };
-           var ActiveMembership = await _membershipRepositorie.FirstOrDefaultAsync(m => m.MemberId == memberId && m.EndDate > DateTime.Now, false, ct);
+           var ActiveMembership = await unitOfWork.GetRepository<Membership>().FirstOrDefaultAsync(m => m.MemberId == memberId && m.EndDate > DateTime.Now, false, ct);
             if (ActiveMembership != null)
             {
-                var plan = await _planRepositorie.GetById(ActiveMembership.PlanId, ct);
+                var plan = await unitOfWork.GetRepository<Plans>().GetById(ActiveMembership.PlanId, ct);
                 MemberShipVm.PlanName = plan.Name;
                 MemberShipVm.MembershipStartDate = ActiveMembership.CreatedAt.ToShortDateString();
                 MemberShipVm.MembershipEndDate = ActiveMembership.EndDate.ToShortDateString();
@@ -129,7 +122,7 @@ namespace G_NET_02_MVC01.BLL.Services.Class
 
         public async Task<MemberToUpdateViewModel> GetMemberToUpdateViewAsync(int memberId, CancellationToken ct = default)
         {
-            var member = await _memberRepositorie.GetById(memberId, ct);
+            var member = await unitOfWork.GetRepository<Member>().GetById(memberId, ct);
             if (member == null) return null;
             return new MemberToUpdateViewModel()
             {
@@ -146,18 +139,18 @@ namespace G_NET_02_MVC01.BLL.Services.Class
 
         public async Task<bool> UpdateMemberAsync(int id, MemberToUpdateViewModel memberToUpdateViewModel, CancellationToken ct = default)
         {
-            var member = await _memberRepositorie.GetById(id, ct);
+            var member = await unitOfWork.GetRepository<Member>().GetById(id, ct);
             if (member == null) return false;
-            if(await _memberRepositorie.AnyAsync(m => m.Email == memberToUpdateViewModel.Email && m.Id != id, ct)) return false;
-            if (await _memberRepositorie.AnyAsync(m => m.Phone == memberToUpdateViewModel.Phone && m.Id != id, ct)) return false;
+            if(await unitOfWork.GetRepository<Member>().AnyAsync(m => m.Email == memberToUpdateViewModel.Email && m.Id != id, ct)) return false;
+            if (await unitOfWork.GetRepository<Member>().AnyAsync(m => m.Phone == memberToUpdateViewModel.Phone && m.Id != id, ct)) return false;
             member.Email = memberToUpdateViewModel.Email;
             member.Phone = memberToUpdateViewModel.Phone;
            member.Address.BuildingNumber = memberToUpdateViewModel.BuildingNumber;
             member.Address.City = memberToUpdateViewModel.City;
             member.Address.Street = memberToUpdateViewModel.Street;
             member.UpdatedAt = DateTime.Now;
-            _memberRepositorie.Update(member);
-            var result = await _memberRepositorie.CompleteAsync();
+            unitOfWork.GetRepository<Member>().Update(member);
+            var result = await unitOfWork.CompleteAsync();
             return result > 0;
 
         }

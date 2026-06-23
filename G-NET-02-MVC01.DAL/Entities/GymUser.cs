@@ -33,10 +33,10 @@ namespace G_NET_02_MVC01.DAL.Entities
         public string Street { get; set; } = null!;
         [Required, MaxLength(50)]
         public string City { get; set; } = null!;
-        [Required, MaxLength(50)]
-        public string State { get; set; } = null!;
-        [Required, MaxLength(10)]
-        public string ZipCode { get; set; } = null!;
+        [MaxLength(50)]
+        public string? State { get; set; }
+        [MaxLength(10)]
+        public string? ZipCode { get; set; } = null!;
 
         public int BuildingNumber { get; set; }
     }

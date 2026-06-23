@@ -23,7 +23,7 @@ namespace G_NET_02_MVC01.DAL.Repositories.Classes
             gymContext.Set<TEntity>().Add(entity);
         }
 
-        public async Task<bool?> AnyAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ct = default)
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ct = default)
         {
             return await gymContext.Set<TEntity>().AnyAsync(expression, ct);
         }

@@ -188,7 +188,6 @@ namespace G_NET_02_MVC01.DAL.Migrations
                         .HasColumnType("varchar");
 
                     b.Property<string>("Photos")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -449,7 +448,6 @@ namespace G_NET_02_MVC01.DAL.Migrations
                                 .HasColumnName("City");
 
                             b1.Property<string>("State")
-                                .IsRequired()
                                 .HasMaxLength(50)
                                 .HasColumnType("nvarchar(50)");
 
@@ -460,7 +458,6 @@ namespace G_NET_02_MVC01.DAL.Migrations
                                 .HasColumnName("Street");
 
                             b1.Property<string>("ZipCode")
-                                .IsRequired()
                                 .HasMaxLength(10)
                                 .HasColumnType("nvarchar(10)");
 
@@ -532,7 +529,6 @@ namespace G_NET_02_MVC01.DAL.Migrations
                                 .HasColumnName("City");
 
                             b1.Property<string>("State")
-                                .IsRequired()
                                 .HasMaxLength(50)
                                 .HasColumnType("nvarchar(50)");
 
@@ -543,7 +539,6 @@ namespace G_NET_02_MVC01.DAL.Migrations
                                 .HasColumnName("Street");
 
                             b1.Property<string>("ZipCode")
-                                .IsRequired()
                                 .HasMaxLength(10)
                                 .HasColumnType("nvarchar(10)");
 
