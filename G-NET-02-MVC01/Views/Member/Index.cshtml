@@ -91,7 +91,7 @@ else if (TempData["ErrorMessage"] != null)
                                             <hr class="dropdown-divider">
                                         </li>
                                         <li>
-                                            <a asp-controller="Member" asp-action="EditMember" asp-route-id="@member.Id"
+                                            <a asp-controller="Member" asp-action="Edit" asp-route-memberId="@member.Id"
                                                class="dropdown-item d-flex align-items-center gap-3">
                                                 <img src="~/images/edit.jpg" alt="edit icon"
                                                      style="width: 20px; height: 20px;" />
@@ -102,7 +102,7 @@ else if (TempData["ErrorMessage"] != null)
                                             <hr class="dropdown-divider">
                                         </li>
                                         <li>
-                                            <a asp-controller="Member" asp-action="Delete" asp-route-id="@member.Id"
+                                            <a asp-controller="Member" asp-action="Delete" asp-route-memberId="@member.Id"
                                                class="dropdown-item d-flex align-items-center gap-3 text-danger">
                                                 <img src="~/images/x-circle 1.jpg" alt="delete icon"
                                                      style="width: 20px; height: 20px;" />

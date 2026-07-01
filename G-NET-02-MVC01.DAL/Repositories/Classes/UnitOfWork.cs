@@ -15,8 +15,13 @@ namespace G_NET_02_MVC01.DAL.Repositories.Classes
         public UnitOfWork(GymContext context)
         {
             _context = context;
-           
+            sessionRepositorie = new SessionRepositorie(_context);
         }
+
+        public ISessionRepositorie sessionRepositorie { get; }
+
+        public ITrainerRepositorie trainerRepositorie { get; }
+
         public async Task<int> CompleteAsync()
         {
            return await _context.SaveChangesAsync();

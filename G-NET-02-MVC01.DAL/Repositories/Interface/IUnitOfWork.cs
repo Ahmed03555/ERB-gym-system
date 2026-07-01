@@ -9,5 +9,8 @@ namespace G_NET_02_MVC01.DAL.Repositories.Interface
     {
         public IGenericRepositorie<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity, new();
         public Task<int> CompleteAsync();
+        public ISessionRepositorie sessionRepositorie { get; }
+
+        public ITrainerRepositorie trainerRepositorie { get; }
     }
 }

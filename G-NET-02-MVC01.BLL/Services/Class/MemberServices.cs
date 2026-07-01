@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using G_NET_02_MVC01.BLL.Services.Common;
 using G_NET_02_MVC01.BLL.Services.Interface;
 using G_NET_02_MVC01.BLL.ViewModels.MembersViewModels;
-using G_NET_02_MVC01.DAL.Repositories.Interface;
 using G_NET_02_MVC01.DAL.Entities;
+using G_NET_02_MVC01.DAL.Repositories.Interface;
+using System;
+using System.Collections.Generic;
+using System.Text;
 namespace G_NET_02_MVC01.BLL.Services.Class
 {
     public class MemberServices : IMemberServices
@@ -101,8 +102,9 @@ namespace G_NET_02_MVC01.BLL.Services.Class
             if (member == null) return null;
             var MemberShipVm=  new MemberViewModel()
            {
-              
-               Name = member.Name,
+
+                Id = member.Id,
+                Name = member.Name,
                Email = member.Email,
                Phone = member.Phone,
                DateOfBirth = member.DateOfBirth.ToShortDateString(),
@@ -126,6 +128,7 @@ namespace G_NET_02_MVC01.BLL.Services.Class
             if (member == null) return null;
             return new MemberToUpdateViewModel()
             {
+                Id = member.Id,
                 Name = member.Name,
                 Email = member.Email,
                 Phone = member.Phone,
@@ -153,6 +156,17 @@ namespace G_NET_02_MVC01.BLL.Services.Class
             var result = await unitOfWork.CompleteAsync();
             return result > 0;
 
+        }
+        public async Task<Result> RemoveUpdateAsync(int id, CancellationToken ct)
+        {
+            var MemberRepo = unitOfWork.GetRepository<Member>();
+            var member = await MemberRepo.GetById(id, ct);
+            if (member is null) return Result.NotFound("Member Is Not Found");
+            MemberRepo.Delete(id);
+
+            var affectedRows = await unitOfWork.CompleteAsync();
+
+            return affectedRows> 0 ? Result.Ok() : Result.Fail("Failed to remove member");
         }
     }
 }

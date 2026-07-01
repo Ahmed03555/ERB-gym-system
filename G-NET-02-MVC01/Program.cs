@@ -5,6 +5,7 @@ using G_NET_02_MVC01.DAL.Repositories.Classes;
 using G_NET_02_MVC01.DAL.Repositories.Interface;
 using G_NET_02_MVC01.BLL.Services.Class;
 using Microsoft.EntityFrameworkCore;
+using G_NET_02_MVC01.BLL.Utilites;
 
 namespace G_NET_02_MVC01
 {
@@ -22,7 +23,12 @@ namespace G_NET_02_MVC01
             //builder.Services.AddScoped<IPlanRepositorie,PlanRepositorie>();
             //builder.Services.AddScoped(typeof(IGenericRepositorie<>), typeof(GenericRepositorie<>));
             builder.Services.AddScoped<IMemberServices, MemberServices>();
+            builder.Services.AddScoped<ISessionServices, SessionServices>();
+            builder.Services.AddScoped<ITrainerServices, TrainerServices>();
+            builder.Services.AddScoped<IPlanServices, PlanServices>();
+            builder.Services.AddScoped<IGenericRepositorie<Plans>, GenericRepositorie<Plans>>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();  
+            builder.Services.AddAutoMapper(m => m.AddProfile<MapipingProfile>());
 
             var app = builder.Build();
 

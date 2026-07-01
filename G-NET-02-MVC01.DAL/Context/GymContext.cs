@@ -24,5 +24,12 @@ namespace G_NET_02_MVC01.DAL.Context
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
         public DbSet<Plans> plans { get; set; }
+        public DbSet<Session> Session { get; set; }
+        public DbSet<Member> Member { get; set; }
+        public DbSet<Trainer> Trainer { get; set; }
+        public DbSet<Booking> Booking { get; set; }
+        public DbSet<HealthRecord> HealthRecord { get; set; }
+
+        
     }
 }
