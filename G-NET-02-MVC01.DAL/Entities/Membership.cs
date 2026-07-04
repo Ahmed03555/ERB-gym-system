@@ -12,9 +12,13 @@ namespace G_NET_02_MVC01.DAL.Entities
 
         public Plans Plan { get; set; } = null!;
         public int PlanId { get; set; }
-         public DateTime EndDate { get; set; }
+
+        public DateTime StartDate { get; set; }   
+        public DateTime EndDate { get; set; }
+
         [NotMapped]
-        public string status  => EndDate >= DateTime.Now ? "Active" : "Expired";
+        public string status => EndDate >= DateTime.Now ? "Active" : "Expired";
+
         [NotMapped]
         public bool isActive => EndDate >= DateTime.Now;
     }

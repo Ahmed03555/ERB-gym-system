@@ -232,6 +232,9 @@ namespace G_NET_02_MVC01.DAL.Migrations
                     b.Property<int>("PlanId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -241,7 +244,11 @@ namespace G_NET_02_MVC01.DAL.Migrations
 
                     b.HasIndex("PlanId");
 
-                    b.ToTable("Membership");
+                    b.ToTable("Membership", t =>
+                        {
+                            t.Property("StartDate")
+                                .HasColumnName("StartDate1");
+                        });
                 });
 
             modelBuilder.Entity("G_NET_02_MVC01.DAL.Entities.Plans", b =>

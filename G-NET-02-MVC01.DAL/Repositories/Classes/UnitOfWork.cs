@@ -16,11 +16,17 @@ namespace G_NET_02_MVC01.DAL.Repositories.Classes
         {
             _context = context;
             sessionRepositorie = new SessionRepositorie(_context);
+            trainerRepositorie = new TrainerRepositorie(_context);
+            memberRepositorie = new MemberRepositorie(_context);
+            bookingRepositorie = new BookingRepositorie(_context);
         }
 
         public ISessionRepositorie sessionRepositorie { get; }
 
         public ITrainerRepositorie trainerRepositorie { get; }
+
+        public IMemberRepositorie memberRepositorie { get; }
+        public IBookingRepositorie bookingRepositorie { get; }
 
         public async Task<int> CompleteAsync()
         {

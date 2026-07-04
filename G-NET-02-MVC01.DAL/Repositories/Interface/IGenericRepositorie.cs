@@ -15,6 +15,8 @@ namespace G_NET_02_MVC01.DAL.Repositories.Interface
 
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ct = default);
 
+        Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate,CancellationToken cancellationToken = default);
+
         void Update(TEntity entity);
         void Add(TEntity entity);
         void Delete(int id);

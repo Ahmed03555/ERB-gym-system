@@ -19,7 +19,6 @@
 
 <body>
     <header>
-        <!-- ^ navbar -->
         <nav class="navbar navbar-expand-lg bg-white my-3">
             <div class="container">
                 <a class="navbar-brand" href="#">
@@ -31,43 +30,49 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    @{
+                        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+
+                        string IsActive(string controllerName) =>
+                            string.Equals(currentController, controllerName, StringComparison.OrdinalIgnoreCase)
+                                ? "active"
+                                : "";
+                    }
                     <ul class="navbar-nav m-auto mb-2 mb-lg-0 mt-3 mt-lg-0">
                         <li class="nav-item">
-                            <li class="nav-item">
-                                <a class="nav-link active px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-action="Index" asp-controller="Home">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-action="Index" asp-controller="Member">Members</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-action="Index" asp-controller="Trainer">Trainers</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-action="Index" asp-controller="Session">Sessions</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-action="Index" asp-controller="Plan">Plans</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Memberships</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Sessions Schedule</a>
-                            </li>
-                            <li class="nav-item">
-                                <form asp-action="Logout" asp-controller="Account" method="post" class="d-inline">
-                                    <button type="submit"
-                                            class="btn btn-link nav-link px-3 py-2 mx-2 fw-bolder fs-5 text-black-alternative">
-                                        Logout
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
+                            <a class="nav-link @IsActive("Home") px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-action="Index" asp-controller="Home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @IsActive("Member") px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-action="Index" asp-controller="Member">Members</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @IsActive("Trainer") px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-action="Index" asp-controller="Trainer">Trainers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @IsActive("Session") px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-action="Index" asp-controller="Session">Sessions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @IsActive("Plan") px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-action="Index" asp-controller="Plan">Plans</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @IsActive("Membership") px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-action="Index" asp-controller="Membership">Memberships</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @IsActive("Booking") px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-action="Index" asp-controller="Booking">Sessions Schedule</a>
+                        </li>
+                        <li class="nav-item">
+                            <form asp-action="Logout" asp-controller="Account" method="post" class="d-inline">
+                                <button type="submit"
+                                        class="btn btn-link nav-link px-3 py-2 mx-2 fw-bolder fs-5 text-black-alternative">
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
                 </div>
-            </nav>
-
-        </header>
+            </div>
+        </nav>
+    </header>
 
     <div class="container">
         <main role="main" class="pb-3">

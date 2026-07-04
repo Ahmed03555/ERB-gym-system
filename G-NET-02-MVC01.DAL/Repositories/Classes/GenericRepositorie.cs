@@ -33,6 +33,11 @@ namespace G_NET_02_MVC01.DAL.Repositories.Classes
             return gymContext.SaveChangesAsync();
         }
 
+        public Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        {
+            return gymContext.Set<TEntity>().CountAsync(predicate, cancellationToken);
+        }
+
         public void Delete(int id)
         {
             var existingEntity = gymContext.Set<TEntity>().FirstOrDefault(e => e.Id == id);

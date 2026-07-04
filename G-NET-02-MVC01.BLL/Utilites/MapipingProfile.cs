@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using G_NET_02_MVC01.BLL.Services.ViewModel.MemberShipViewModels;
 using G_NET_02_MVC01.BLL.ViewModels.MembersViewModels;
 using G_NET_02_MVC01.BLL.ViewModels.PlanViewModels;
 using G_NET_02_MVC01.BLL.ViewModels.SessionViewModels;
@@ -36,6 +37,18 @@ namespace G_NET_02_MVC01.BLL.Utilites
             CreateMap<Session,UpdateSessionViewModel>().ReverseMap();
             CreateMap<Trainer, TrainerToUpdateViewModel>();
 
+
+            CreateMap<Membership, MemberShipViewModels>()
+            .ForMember(dest => dest.MembershipId,
+                opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.MemberName,
+                opt => opt.MapFrom(src => src.Member.Name))
+            .ForMember(dest => dest.PlanName,
+                opt => opt.MapFrom(src => src.Plan.Name));
+
+
+
+
             CreateMap<Plans, UpdatePlanViewModel>()
     .ForMember(dest => dest.PlanName, opt => opt.MapFrom(src => src.Name));
             CreateMap<CreateTrainerViewModel, Trainer>()
@@ -62,6 +75,7 @@ namespace G_NET_02_MVC01.BLL.Utilites
             City = s.City,
             Street = s.Street
         }));
+        
         }
     }
 }

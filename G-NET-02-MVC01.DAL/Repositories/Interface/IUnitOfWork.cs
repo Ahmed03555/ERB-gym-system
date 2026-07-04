@@ -11,6 +11,8 @@ namespace G_NET_02_MVC01.DAL.Repositories.Interface
         public Task<int> CompleteAsync();
         public ISessionRepositorie sessionRepositorie { get; }
 
+        public IMemberRepositorie  memberRepositorie { get; }
+        public IBookingRepositorie bookingRepositorie { get; }
         public ITrainerRepositorie trainerRepositorie { get; }
     }
 }

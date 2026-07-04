@@ -26,9 +26,13 @@ namespace G_NET_02_MVC01
             builder.Services.AddScoped<ISessionServices, SessionServices>();
             builder.Services.AddScoped<ITrainerServices, TrainerServices>();
             builder.Services.AddScoped<IPlanServices, PlanServices>();
+            builder.Services.AddScoped< IMemberShipServices, MemberShipServices>();
+
             builder.Services.AddScoped<IGenericRepositorie<Plans>, GenericRepositorie<Plans>>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();  
             builder.Services.AddAutoMapper(m => m.AddProfile<MapipingProfile>());
+            builder.Services.AddScoped<IBookingRepositorie, BookingRepositorie>();
+            builder.Services.AddScoped<IBookingServices, BookingServices>();
 
             var app = builder.Build();
 
