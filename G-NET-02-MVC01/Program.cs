@@ -6,12 +6,14 @@ using G_NET_02_MVC01.DAL.Repositories.Interface;
 using G_NET_02_MVC01.BLL.Services.Class;
 using Microsoft.EntityFrameworkCore;
 using G_NET_02_MVC01.BLL.Utilites;
+using G_NET_02_MVC01.BLL.Services.AttachmentServices;
+using Microsoft.AspNetCore.Identity;
 
 namespace G_NET_02_MVC01
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -33,9 +35,27 @@ namespace G_NET_02_MVC01
             builder.Services.AddAutoMapper(m => m.AddProfile<MapipingProfile>());
             builder.Services.AddScoped<IBookingRepositorie, BookingRepositorie>();
             builder.Services.AddScoped<IBookingServices, BookingServices>();
+            builder.Services.AddScoped<IAttachmentServices, AttachmentServices>();
+            builder.Services.AddScoped<IAnalyticsServices, AnalyticsServices>();
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(option => {
+                option.Password.RequiredLength = 6;
+                option.Password.RequireNonAlphanumeric = false;
+                option.Password.RequireUppercase = false;
+                option.Password.RequireLowercase = false;
+                option.User.RequireUniqueEmail = false;
+                option.Lockout.MaxFailedAccessAttempts=5;
+                option.Lockout.DefaultLockoutTimeSpan=TimeSpan.FromMinutes(4);
+            }).AddEntityFrameworkStores<GymContext>();
+
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
 
             var app = builder.Build();
-
+            await app.MigrationAndSeedAsync();
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -46,7 +66,7 @@ namespace G_NET_02_MVC01
 
             app.UseHttpsRedirection();
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();

@@ -3,11 +3,13 @@ using G_NET_02_MVC01.BLL.Services.Common;
 using G_NET_02_MVC01.BLL.Services.Interface;
 using G_NET_02_MVC01.BLL.ViewModels.SessionViewModels;
 using G_NET_02_MVC01.BLL.ViewModels.TrainerViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace G_NET_02_MVC01.Controllers
 {
+    [Authorize]
     public class TrainerController : Controller
     {
         private readonly ITrainerServices trainerServices;

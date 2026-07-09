@@ -54,8 +54,19 @@ else if (TempData["ErrorMessage"] != null)
                         <tr>
                             <td>
                                 <span class="avatar">
-                                    <img src="~/images/User.jpg" alt="Default Avatar" class="rounded-circle"
-                                         style="width: 40px; height: 40px;" />
+                                    @if(!string.IsNullOrEmpty(member.Photo))
+                                    {
+                                        <img src="@Url.Action("Picture", "Member", new { id = member.Id })" alt="Member Avatar" class="rounded-circle"
+                                             style="width: 40px; height: 40px;" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/User.jpg" alt="Default Avatar" class="rounded-circle"
+                                             style="width: 40px; height: 40px;" />
+                                    }
+
+                                 
+
                                 </span>
                             </td>
                             <td><span>@member.Name</span></td>

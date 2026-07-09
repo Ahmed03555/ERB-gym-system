@@ -1,11 +1,13 @@
 ﻿using G_NET_02_MVC01.BLL.Services.Interface;
 using G_NET_02_MVC01.BLL.Services.ViewModel.BookingViewModels;
 using G_NET_02_MVC01.DAL.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace G_NET_02_MVC01.Controllers
 {
+    [Authorize]
     public class BookingController : Controller
     {
         private readonly IBookingServices _bookingServices ;

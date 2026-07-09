@@ -10,7 +10,9 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.1.1" />
   </ItemGroup>
-
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\G-NET-02-MVC01.DAL\G-NET-02-MVC01.DAL.csproj" />
   </ItemGroup>

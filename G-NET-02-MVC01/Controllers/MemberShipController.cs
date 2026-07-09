@@ -1,9 +1,11 @@
 ﻿using G_NET_02_MVC01.BLL.Services.Interface;
 using G_NET_02_MVC01.BLL.Services.ViewModel.MemberShipViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace G_NET_02_MVC01.Controllers
 {
+    [Authorize]
     public class MemberShipController : Controller
     {
         private readonly IMemberShipServices _memberShipServices;

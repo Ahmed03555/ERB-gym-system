@@ -1,4 +1,6 @@
-﻿using G_NET_02_MVC01.BLL.Services.Common;
+﻿using AutoMapper;
+using G_NET_02_MVC01.BLL.Services.AttachmentServices;
+using G_NET_02_MVC01.BLL.Services.Common;
 using G_NET_02_MVC01.BLL.Services.Interface;
 using G_NET_02_MVC01.BLL.ViewModels.MembersViewModels;
 using G_NET_02_MVC01.DAL.Entities;
@@ -11,9 +13,12 @@ namespace G_NET_02_MVC01.BLL.Services.Class
     public class MemberServices : IMemberServices
     {
         private readonly IUnitOfWork unitOfWork;
-
-        public MemberServices(IUnitOfWork unitOfWork) {
+        private readonly IAttachmentServices attachmentServices;
+        private readonly IMapper mapper;
+        public MemberServices(IUnitOfWork unitOfWork, IAttachmentServices attachmentServices, IMapper mapper) {
             this.unitOfWork=unitOfWork;
+            this.attachmentServices=attachmentServices;
+            this.mapper=mapper;
         }
         public async Task<bool> CreateMemberAsync(CreateMemberViewModel createMemberViewModel, CancellationToken ct = default)
         {
@@ -24,8 +29,16 @@ namespace G_NET_02_MVC01.BLL.Services.Class
             {
                 return false;
             }
+            var photoPath = await attachmentServices.UpdateAsync(createMemberViewModel.PhotoFile.OpenReadStream(), createMemberViewModel.PhotoFile.FileName, "MemberPhotos", ct);
+
+            if (string.IsNullOrEmpty(photoPath))
+            {
+                return false;
+            }
+
             var member = new Member()
             {
+                Photos = photoPath,
                 Name = createMemberViewModel.Name,
                 Email = createMemberViewModel.Email,
                 Phone = createMemberViewModel.Phone,
@@ -48,7 +61,15 @@ namespace G_NET_02_MVC01.BLL.Services.Class
             };
              unitOfWork.GetRepository<Member>().Add(member);
             var result = await unitOfWork.CompleteAsync();
-            return result > 0;
+            if(result > 0)
+            {
+                return true;
+            }
+            else
+            {
+                 attachmentServices.Delete( member.Photos, "MemberPhotos");
+                return false;
+            }
         }
 
         public async Task<bool> DeleteMemberAsync(int memberId, CancellationToken ct = default)
@@ -166,7 +187,15 @@ namespace G_NET_02_MVC01.BLL.Services.Class
 
             var affectedRows = await unitOfWork.CompleteAsync();
 
-            return affectedRows> 0 ? Result.Ok() : Result.Fail("Failed to remove member");
+            if(affectedRows > 0)
+            {
+                if (!string.IsNullOrEmpty(member.Photos))
+                
+                    attachmentServices.Delete(member.Photos, "MemberPhotos");
+                
+                return Result.Ok();
+            }
+            return Result.Fail("Failed to remove member");
         }
     }
 }

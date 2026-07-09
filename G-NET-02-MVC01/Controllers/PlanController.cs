@@ -1,16 +1,18 @@
 ﻿
-using Microsoft.EntityFrameworkCore;
-using G_NET_02_MVC01.Models;
-using Microsoft.AspNetCore.Mvc;
-using G_NET_02_MVC01.DAL.Context;
-using G_NET_02_MVC01.DAL.Repositories.Interface;
-using G_NET_02_MVC01.DAL.Entities;
-using G_NET_02_MVC01.DAL.Repositories.Classes;
 using G_NET_02_MVC01.BLL.Services.Interface;
 using G_NET_02_MVC01.BLL.ViewModels.PlanViewModels;
+using G_NET_02_MVC01.DAL.Context;
+using G_NET_02_MVC01.DAL.Entities;
+using G_NET_02_MVC01.DAL.Repositories.Classes;
+using G_NET_02_MVC01.DAL.Repositories.Interface;
+using G_NET_02_MVC01.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace G_NET_02_MVC01.Controllers
 {
+    [Authorize]
     public class PlanController : Controller
     {
         private readonly IGenericRepositorie<Plans> planRepositorie;

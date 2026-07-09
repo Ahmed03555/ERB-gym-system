@@ -1,4 +1,5 @@
 ﻿using G_NET_02_MVC01.DAL.Entities.Enum;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,9 @@ namespace G_NET_02_MVC01.BLL.ViewModels.MembersViewModels
 {
     public class CreateMemberViewModel
     {
+        [Required(ErrorMessage = "Photo Is Required")]
+        [Display(Name = "Photo")]
+        public IFormFile PhotoFile { get; set; } = default!;
         [Required(ErrorMessage = "Name Is Required")]
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name can only contain letters and spaces")]
         public string Name { get; set; } = default!;

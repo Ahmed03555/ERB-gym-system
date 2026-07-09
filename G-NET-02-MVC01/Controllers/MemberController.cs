@@ -1,15 +1,21 @@
-﻿using G_NET_02_MVC01.BLL.Services.Class;
+﻿using G_NET_02_MVC01.BLL.Services.AttachmentServices;
+using G_NET_02_MVC01.BLL.Services.Class;
 using G_NET_02_MVC01.BLL.Services.Interface;
 using G_NET_02_MVC01.BLL.ViewModels.MembersViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
 namespace G_NET_02_MVC01.Controllers
 {
+    [Authorize(Roles ="SuperAdmin")]
     public class MemberController : Controller
     {
         private readonly IMemberServices _memberServices;
-        public MemberController(IMemberServices memberServices)
+        private readonly IAttachmentServices _attachmentServices;
+        public MemberController(IMemberServices memberServices, IAttachmentServices attachmentServices)
         {
             _memberServices = memberServices;
+            _attachmentServices = attachmentServices;
         }
         public async Task<IActionResult> Index(CancellationToken ct)
         {
@@ -111,7 +117,21 @@ namespace G_NET_02_MVC01.Controllers
                 ? "Member Deleted Successfully!"
                 : Result.ErrorMessage; return RedirectToAction(nameof(Index));
         }
-    }
+        public async Task<IActionResult> Picture(int id)
+        {
+            var member = await _memberServices.GetMemberDetailsAsync(id);
+            if (member == null || string.IsNullOrEmpty(member.Photo))
+            {
+                return NotFound();
+            }
+            var result = _attachmentServices.GetFile(member.Photo, "MemberPhotos");
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return File(result.Value.Stream, result.Value.ContentType);
+        }
+}
 }
 
 

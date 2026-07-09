@@ -1,5 +1,7 @@
 ﻿using G_NET_02_MVC01.DAL.Configuration;
 using G_NET_02_MVC01.DAL.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Text;
 
 namespace G_NET_02_MVC01.DAL.Context
 {
-    public class GymContext : DbContext
+    public class GymContext : IdentityDbContext<ApplicationUser>
     {
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
@@ -20,8 +22,12 @@ namespace G_NET_02_MVC01.DAL.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.Entity<ApplicationUser>(ETP => {
+                ETP.Property(u => u.FirstName).HasMaxLength(50).HasColumnType("nvarchar(50)");
+                ETP.Property(u => u.LastName).HasMaxLength(50).HasColumnType("nvarchar(50)");
+            });
         }
         public DbSet<Plans> plans { get; set; }
         public DbSet<Session> Session { get; set; }
@@ -30,6 +36,6 @@ namespace G_NET_02_MVC01.DAL.Context
         public DbSet<Booking> Booking { get; set; }
         public DbSet<HealthRecord> HealthRecord { get; set; }
 
-        
-    }
+
+}
 }
